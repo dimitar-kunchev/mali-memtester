@@ -402,11 +402,11 @@ int memtester_main(int argc, char **argv) {
     exit(exit_code);
 }
 
-#ifndef MESA_MEMTESTER
-#warning "Compiling Memtester Executable"
+#ifndef MALI_MEMTESTER
+/* #warning "Compiling Memtester Executable" */
 int main (int argc, char **argv) {
 	memtester_main(argc, argv);
 }
 #else
-#warning "NOT Compiling Memtester Executable"
+/* #warning "NOT Compiling Memtester Executable" */
 #endif

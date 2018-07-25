@@ -1,5 +1,5 @@
 #
-# Makefile for mesa-memtester by Dimitar Kunchev
+# Makefile for mali-memtester by Dimitar Kunchev
 #
 # Copyright (C) 2017 Dimitar Kunchev
 # 
@@ -7,7 +7,7 @@
 # COPYING for details.
 #
 
-# Compiling is simple - just call make and you should get a mesa-memtester executable
+# Compiling is simple - just call make and you should get a mali-memtester executable
 
 CC=gcc
 MEMTESTER_FOLDER=memtester-4.3.0
@@ -19,10 +19,10 @@ OBJDIR=obj
 SOURCES_TC=textured-cube.c textured-cube-demo.c
 OBJECTS_TC=$(addprefix $(OBJDIR)/, $(SOURCES_TC:.c=.o))
 
-SOURCES_MT=textured-cube.c mesa-memtester.c
+SOURCES_MT=textured-cube.c mali-memtester.c
 OBJECTS_MT=$(addprefix $(OBJDIR)/, $(SOURCES_MT:.c=.o))
 
-all: textured-cube-demo mesa-memtester
+all: textured-cube-demo mali-memtester
 
 mkobjdir:
 	mkdir -p $(OBJDIR)
@@ -30,7 +30,7 @@ mkobjdir:
 textured-cube-demo: $(OBJECTS_TC)
 	$(CC) $(LDFLAGS) $(OBJECTS_TC) -o $@
 
-mesa-memtester: memtester $(OBJECTS_MT)
+mali-memtester: memtester $(OBJECTS_MT)
 	$(CC) $(LDFLAGS) $(OBJECTS_MT) $(MEMTESTER_FOLDER)/memtester.o $(MEMTESTER_FOLDER)/tests.o -o $@	
 
 $(OBJDIR)/%.o: %.c mkobjdir
@@ -41,7 +41,7 @@ clean: memtester-clean
 	-rmdir $(OBJDIR)
 
 memtester:
-	EXTRA_CC_FLAGS="-DMESA_MEMTESTER" make -C $(MEMTESTER_FOLDER) memtester.o tests.o
+	EXTRA_CC_FLAGS="-DMALI_MEMTESTER" make -C $(MEMTESTER_FOLDER) memtester.o tests.o
 
 memtester-clean:
 	make -C $(MEMTESTER_FOLDER)/ clean

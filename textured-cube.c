@@ -1,7 +1,7 @@
 /*
  * textured-cube version 0.1
  * 
- * Part of the Mesa Memory Testing tool (https://github.com/dimitar-kunchev/mesa-memtester)
+ * Part of the MALI Memory Testing tool (https://github.com/dimitar-kunchev/mali-memtester)
  *
  * This creates a spinning textured cube and displays it on the framebuffer
  * Code is based on bits and pieces from various sources, including:

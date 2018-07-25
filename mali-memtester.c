@@ -1,10 +1,10 @@
 /*
- * mesa-memtester version 0.1
+ * mali-memtester version 0.1
  * 
  * Memory Testing tool, based on https://github.com/ssvb/lima-memtester but
- * using MESA instead of LIMA
+ * using MALI instead of LIMA
  * 
- * https://github.com/dimitar-kunchev/mesa-memtester
+ * https://github.com/dimitar-kunchev/mali-memtester
  * 
  * Copyright (C) 2018 Dimitar Kunchev <d.kunchev@gmail.com>
  * Licensed under the terms of the GNU General Public License version 2 (only).
@@ -43,7 +43,7 @@ static void *cube_thread(void *threadid)
 }
 
 int main(int argc, char **argv) {
-	printf("This is a simple textured cube demo from the mesa driver and\n");
+	printf("This is a simple textured cube demo from the mali driver and\n");
 	printf("a memtester. Both combined in a single program. The mali400\n");
 	printf("hardware is only used to stress RAM in the background. But\n");
 	printf("this happens to significantly increase chances of exposing\n");
