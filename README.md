@@ -31,3 +31,7 @@ http://linux-sunxi.org/A10_DRAM_Controller_Calibration.
 
 The `textured-cube-demo executable will just display a spinning cube - you can use that to verify your 
 driver and display are working properly.
+
+### Test Coverage
+I have built this code to test my custom A20-based boards with 4.18 kernels and bootstrapped file system.
+This is a very specific scenario, so this tool may not work for everyone.
