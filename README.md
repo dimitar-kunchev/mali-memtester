@@ -14,10 +14,9 @@ For that purpose I decided to build a new version that uses the MALI drivers.
 
 ### Building
 Building is simple - just call make and two executables will be produced - textured-cube-demo and 
-mali-memtester. There is no install (at the moment).
-To do that you need libEGL and libGLESv2 (or actually libMali). On Sunxi I have used the following
-guide: https://bootlin.com/blog/mali-opengl-support-on-allwinner-platforms-with-mainline-linux/. Apart 
-from that you need sane build system (gcc, headers, etc) and working MALI with a framebuffer.
+mali-memtester. There is no install (at the moment). To compile and run you will need working MALI with a 
+framebuffer. I have used the instructions at 
+https://bootlin.com/blog/mali-opengl-support-on-allwinner-platforms-with-mainline-linux/
 
 ### Use
 Same as the original memtester:
