@@ -19,5 +19,6 @@
 
 extern int use_phys;
 extern off_t physaddrbase;
+extern int memtester_early_exit;
 
 int memtester_main(int argc, char **argv);

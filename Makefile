@@ -19,8 +19,9 @@ OBJDIR=obj
 SOURCES_TC=textured-cube.c textured-cube-demo.c
 OBJECTS_TC=$(addprefix $(OBJDIR)/, $(SOURCES_TC:.c=.o))
 
-SOURCES_MT=textured-cube.c mali-memtester.c
-OBJECTS_MT=$(addprefix $(OBJDIR)/, $(SOURCES_MT:.c=.o))
+SOURCES_MT=textured-cube.c mali-memtester.c 
+SOURCES_MT_ORIG=$(addprefix $(MEMTESTER_FOLDER)/, memtester.c tests.c arm-asm-helpers.S)
+OBJECTS_MT=$(addprefix $(OBJDIR)/, $(SOURCES_MT:.c=.o)) $(SOURCES_MT_ORIG:.c=.o)
 
 all: textured-cube-demo mali-memtester
 
@@ -30,18 +31,21 @@ mkobjdir:
 textured-cube-demo: $(OBJECTS_TC)
 	$(CC) $(LDFLAGS) $(OBJECTS_TC) -o $@
 
-mali-memtester: memtester $(OBJECTS_MT)
-	$(CC) $(LDFLAGS) $(OBJECTS_MT) $(MEMTESTER_FOLDER)/memtester.o $(MEMTESTER_FOLDER)/tests.o -o $@	
+mali-memtester: $(OBJECTS_MT)
+	$(CC) $(LDFLAGS) $(OBJECTS_MT) -o $@	
 
 $(OBJDIR)/%.o: %.c mkobjdir
 	$(CC) $(CFLAGS) $< -o $@
 
-clean: memtester-clean
+$(MEMTESTER_FOLDER)/%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
+
+clean: 
 	-rm -rf $(OBJECTS_MT) $(OBJECTS_TC) textured-cube-demo
 	-rmdir $(OBJDIR)
 
-memtester:
-	EXTRA_CC_FLAGS="-DMALI_MEMTESTER" make -C $(MEMTESTER_FOLDER) memtester.o tests.o
+#memtester:
+#	EXTRA_CC_FLAGS="-DMALI_MEMTESTER" make -C $(MEMTESTER_FOLDER) memtester.o tests.o
 
-memtester-clean:
-	make -C $(MEMTESTER_FOLDER)/ clean
+#memtester-clean:
+#	make -C $(MEMTESTER_FOLDER)/ clean

@@ -13,5 +13,6 @@
 
 int main(int argc, char *argv[])
 {
-	return textured_cube_main();
+	int stop_flag = 0;
+	return textured_cube_main(&stop_flag);
 }

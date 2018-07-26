@@ -283,10 +283,11 @@ static void create_shaders(void) {
 	glLinkProgram(program);  /* needed to put attribs into effect */
 
 	u_matrix = glGetUniformLocation(program, "modelViewProjection");
+	/*
    	printf("Uniform modelViewProjection at %d\n", u_matrix);
 	printf("Attrib in_position at %d\n", attr_in_position);
 	printf("Attrib in_texture_coord at %d\n", attr_in_texture_coord);
-	printf("Attrib in_texture at %d\n", attr_in_texture);
+	printf("Attrib in_texture at %d\n", attr_in_texture); */
 
 	// Prepare the texture
 	if (loadCubeTexture() == 0) {
@@ -328,7 +329,7 @@ static void draw(void) {
 	view_rotz = (view_rotz + 2) % 360;
 }
 
-int textured_cube_main () {
+int textured_cube_main (int * stop_flag) {
 	int width = 480, height = 272;
         EGLDisplay display;
         EGLConfig config;
@@ -426,16 +427,22 @@ int textured_cube_main () {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	printf("Starting loop\n");
-        while (1) {
+	//printf("Starting loop\n");
+        while (!(*stop_flag)) {
 		draw();
 		eglSwapBuffers(display, surface);
-		usleep(25000);
+		// usleep(25000);
 	};
+	//printf("Exit loop\n");
 
-	eglDestroyContext(display, context);
-	eglDestroySurface(display, surface);
-	eglTerminate(display);
+	glClearColor(0, 0, 0, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glFlush();
+        eglSwapBuffers(display, surface);
+
+	//eglDestroyContext(display, context);
+	//eglDestroySurface(display, surface);
+	//eglTerminate(display);
         return EXIT_SUCCESS;
 }
 

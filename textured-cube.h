@@ -23,6 +23,6 @@
 #ifndef __TEXTURED_CUBE_H__
 #define __TEXTURED_CUBE_H__
 
-int textured_cube_main(void);
+int textured_cube_main(int * stop_flag);
 
 #endif

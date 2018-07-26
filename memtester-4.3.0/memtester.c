@@ -42,11 +42,11 @@ struct test tests[] = {
     { "Compare OR", test_or_comparison },
     { "Compare AND", test_and_comparison },
     { "Sequential Increment", test_seqinc_comparison },
-    { "Solid Bits", test_solidbits_comparison },
+    { "Bit Flip", test_bitflip_comparison },
     { "Block Sequential", test_blockseq_comparison },
     { "Checkerboard", test_checkerboard_comparison },
     { "Bit Spread", test_bitspread_comparison },
-    { "Bit Flip", test_bitflip_comparison },
+    { "Solid Bits", test_solidbits_comparison },
     { "Walking Ones", test_walkbits1_comparison },
     { "Walking Zeroes", test_walkbits0_comparison },
 #ifdef TEST_NARROW_WRITES    
@@ -97,6 +97,7 @@ void usage(char *me);
 
 /* Global vars - so tests have access to this information */
 int use_phys = 0;
+int memtester_early_exit = 0;
 off_t physaddrbase = 0;
 
 /* Function definitions */
@@ -135,7 +136,10 @@ int memtester_main(int argc, char **argv) {
     pagesize = memtester_pagesize();
     pagesizemask = (ptrdiff_t) ~(pagesize - 1);
     printf("pagesizemask is 0x%tx\n", pagesizemask);
-    
+
+    if (getenv("MEMTESTER_EARLY_EXIT"))
+        memtester_early_exit = 1;
+
     /* If MEMTESTER_TEST_MASK is set, we use its value as a mask of which
        tests we run.
      */
@@ -248,7 +252,7 @@ int memtester_main(int argc, char **argv) {
     }
     if (wantbytes < pagesize) {
         fprintf(stderr, "bytes %ld < pagesize %ld -- memory argument too large?\n",
-                wantbytes, pagesize);
+                (long)wantbytes, (long)pagesize);
         exit(EXIT_FAIL_NONSTARTER);
     }
 
@@ -370,12 +374,15 @@ int memtester_main(int argc, char **argv) {
             printf("/%lu", loops);
         }
         printf(":\n");
-        printf("  %-20s: ", "Stuck Address");
         fflush(stdout);
-        if (!test_stuck_address(aligned, bufsize / sizeof(ul))) {
-             printf("ok\n");
-        } else {
-            exit_code |= EXIT_FAIL_ADDRESSLINES;
+        if (!getenv("MEMTESTER_SKIP_STUCK_ADDRESS")) {
+            printf("  %-20s: ", "Stuck Address");
+            fflush(stdout);
+            if (!test_stuck_address(aligned, bufsize / sizeof(ul))) {
+                printf("ok\n");
+            } else {
+                exit_code |= EXIT_FAIL_ADDRESSLINES;
+            }
         }
         for (i=0;;i++) {
             if (!tests[i].name) break;
@@ -397,16 +404,7 @@ int memtester_main(int argc, char **argv) {
         fflush(stdout);
     }
     if (do_mlock) munlock((void *) aligned, bufsize);
-    printf("Done.\n");
+    printf("Done, ec %d.\n", exit_code);
     fflush(stdout);
-    exit(exit_code);
+    return (exit_code);
 }
-
-#ifndef MALI_MEMTESTER
-/* #warning "Compiling Memtester Executable" */
-int main (int argc, char **argv) {
-	memtester_main(argc, argv);
-}
-#else
-/* #warning "NOT Compiling Memtester Executable" */
-#endif
