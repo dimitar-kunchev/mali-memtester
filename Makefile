@@ -9,7 +9,7 @@
 
 # Compiling is simple - just call make and you should get a mali-memtester executable
 
-CC=gcc
+CC?=gcc
 MEMTESTER_FOLDER=memtester-4.3.0
 
 LDFLAGS=-lGLESv2 -lEGL -lm -pthread
